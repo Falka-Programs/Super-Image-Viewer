@@ -20,13 +20,12 @@ namespace Super_Image_Viewer
             InitializeComponent();
             fsv = new FileSystemViewer();
             fsv.MoveTo("..\\");
-            Console.WriteLine(fsv.GetDirectories()[0].Name);
+            path_textBox.Text = fsv.CurrentPath;
         }
 
         private async void Form1_Load(object sender, EventArgs e)
         {
             LoadIcons();
-            ListViewItem lvt = new ListViewItem("Test folder",0);
             await UpdateFileViewAsync();
         }
         
@@ -52,15 +51,22 @@ namespace Super_Image_Viewer
         }
         private Image resizeImage(string path)
         {
-            Image toResize = Image.FromFile(path);
-            Bitmap b = new Bitmap(128, 128);
-            Graphics g = Graphics.FromImage((Image)b);
-            g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-             g.DrawImage(toResize, 0, 0, 128, 128);
-            
-            g.Dispose();
-            toResize.Dispose();
-            return (Image)b;
+            try
+            {
+                Image toResize = Image.FromFile(path);
+                Bitmap b = new Bitmap(128, 128);
+                Graphics g = Graphics.FromImage((Image)b);
+                g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                g.DrawImage(toResize, 0, 0, 128, 128);
+                g.Dispose();
+                toResize.Dispose();
+                return (Image)b;
+            }
+            catch
+            {
+                Image error_image = Image.FromFile("../../Images/error.png");
+                return error_image;
+            }
         }
         private Task<Image> resizeImageAsync(string path)
         {
@@ -69,11 +75,12 @@ namespace Super_Image_Viewer
                 return resizeImage(path);
             });
         }
+
         private async Task UpdateFileViewAsync()
         {
             CleanIcons();
             //NOTE elements in array has index one less that elements in FileView
-            //This caused by element ... that returns back in directory
+            //This caused by element ..\ that returns back in directory
             File_View.Items.Clear();
             File_View.Items.Add(@"..\", 0);
             for (int i = 0; i < fsv.GetDirectories().Length; i++)
@@ -90,9 +97,7 @@ namespace Super_Image_Viewer
                         File_View.Items.Add(file_name, 2);
                     else
                     {
-                        //int pos = AddIcons(Image.FromFile(fsv.GetFiles()[i].FullName));
                         Image resizedImage = await resizeImageAsync(fsv.GetFiles()[i].FullName);
-                        //int pos = AddIcons(resizedImage(fsv.GetFiles()[i].FullName));
                         int pos = AddIcons(resizedImage);
                         positions.Add(pos);
                         names.Add(file_name);
@@ -112,37 +117,85 @@ namespace Super_Image_Viewer
                     File_View.Items.Add(file_name, 1);
                 }
             }
-
-            Console.WriteLine($"POS:{positions.Count} NAME:{names.Count}");
-            //Console.WriteLine(positions.Count);
             for(int i = 0; i < positions.Count; i++)
             {
                 File_View.Items.Add(names[i], positions[i]);
             }
         }
-
-        //private Task UpdateFileViewAsync()
-        //{
-        //    return Task.Run(() =>
-        //    {
-        //        UpdateFileView();
-        //    });
-        //}
+        private void ShowImage(string path)
+        {
+            Image img = Image.FromFile(path);
+            pictureBox.Image = img;
+            SetActiveTab(1);
+        }
+        private Task ShowImageAsync(string path)
+        {
+            return Task.Run(() =>
+            {
+                ShowImage(path);
+            });
+        }
 
         private async void File_View_DoubleClick(object sender, EventArgs e)
         {
             if (File_View.SelectedIndices.Count > 0)
             {
                 if (File_View.SelectedItems[0].ImageIndex == 0)
+                {
                     fsv.MoveTo(File_View.SelectedItems[0].Text);
+                    path_textBox.Text = fsv.CurrentPath;
+                }
                 else if (File_View.SelectedItems[0].ImageIndex == 1)
                     MessageBox.Show("Current format isn`t supported!");
-                else if (File_View.SelectedItems[0].ImageIndex == 2)
+                else if (File_View.SelectedItems[0].ImageIndex > 1)
                 {
-                    Console.WriteLine(1);
+                    await ShowImageAsync(fsv.GetFilePath(File_View.SelectedItems[0].Text));
+
                 }
             }
             await UpdateFileViewAsync();
         }
+        delegate void SetActiveTabCallback(int tab);
+        private void SetActiveTab(int tab)
+        {
+            if (this.path_textBox.InvokeRequired)
+            {
+                SetActiveTabCallback d = new SetActiveTabCallback(SetActiveTab);
+                this.Invoke(d, new object[] { tab });
+            }
+            else
+            {
+                this.tabControl.SelectedIndex = tab;
+            }
+        }
+
+        private async void path_textBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Enter)
+            {
+                try
+                {
+                    fsv.CurrentPath = path_textBox.Text;
+                    await UpdateFileViewAsync();
+
+                }
+                catch
+                {
+                    MessageBox.Show("Invalid path", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                
+            }
+        }
+
+        private async void back_button_Click(object sender, EventArgs e)
+        {
+            if (fsv.IsBackAvaible() == false)
+                back_button.Enabled = false;
+            fsv.MoveTo("..\\");
+            path_textBox.Text = fsv.CurrentPath;
+            await UpdateFileViewAsync();
+        }
     }
+
+    
 }

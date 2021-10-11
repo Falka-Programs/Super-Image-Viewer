@@ -16,27 +16,38 @@ namespace Super_Image_Viewer
             }
             set
             {
-                currentPath = value;
-                UpdatePath(currentPath);
+                try
+                {
+                    UpdatePath(value);
+                    currentPath = value;
+                }
+                catch(Exception err)
+                {
+                    throw new ArgumentOutOfRangeException(err.Message);
+                }
+                
             }
         }
         private string currentPath;
+
+
 
         private DirectoryInfo[] Directories;
         private FileInfo[] Files;
         DirectoryInfo df;
         private void UpdatePath(string newPath)
         {
-            df = new DirectoryInfo(CurrentPath);
+            
             try
             {
+                df = new DirectoryInfo(newPath);
                 Files = df.GetFiles();
                 Directories = df.GetDirectories();
+
             }
-            catch
+            catch(Exception err)
             {
-                Files = new FileInfo[0];
-                Directories = new DirectoryInfo[0];
+                throw new ArgumentException($"{err.Message}");
             }
         }
         public FileSystemViewer()
@@ -86,7 +97,10 @@ namespace Super_Image_Viewer
             }
         }
 
-
+        public string GetFilePath(string path)
+        {
+            return $"{CurrentPath}{path}";
+        }
         public bool IsImage(string name)
         {
             if (!String.IsNullOrWhiteSpace(name))
@@ -103,6 +117,14 @@ namespace Super_Image_Viewer
                 else
                     return false;
             }
+            else
+                return false;
+        }
+
+        public bool IsBackAvaible()
+        {
+            if (currentPath.Split('\\').Length > 2)
+                return true;
             else
                 return false;
         }
