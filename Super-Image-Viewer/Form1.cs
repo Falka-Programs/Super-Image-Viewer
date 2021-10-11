@@ -14,6 +14,7 @@ namespace Super_Image_Viewer
     public partial class Form1 : Form
     {
         FileSystemViewer fsv;
+        ImageList iList;
         public Form1()
         {
             InitializeComponent();
@@ -22,17 +23,16 @@ namespace Super_Image_Viewer
             Console.WriteLine(fsv.GetDirectories()[0].Name);
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private async void Form1_Load(object sender, EventArgs e)
         {
-            //imageList1.ImageSize = new Size(64, 64);
             LoadIcons();
             ListViewItem lvt = new ListViewItem("Test folder",0);
-            UpdateFileView();
+            await UpdateFileViewAsync();
         }
-
+        
         private void LoadIcons()
         {
-            ImageList iList = new ImageList();
+            iList = new ImageList();
             iList.ImageSize = new Size(128, 128);
             iList.ColorDepth = ColorDepth.Depth32Bit;
             iList.Images.Add(Image.FromFile("../../Images/folder.png"));
@@ -40,8 +40,38 @@ namespace Super_Image_Viewer
             iList.Images.Add(Image.FromFile("../../Images/image.png"));
             File_View.LargeImageList = iList;
         }
-        private void UpdateFileView()
+        private int AddIcons(Image img)
         {
+            iList.Images.Add(img);
+            return iList.Images.Count-1;
+        }
+        private void CleanIcons()
+        {
+            iList.Dispose();
+            LoadIcons();
+        }
+        private Image resizeImage(string path)
+        {
+            Image toResize = Image.FromFile(path);
+            Bitmap b = new Bitmap(128, 128);
+            Graphics g = Graphics.FromImage((Image)b);
+            g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+             g.DrawImage(toResize, 0, 0, 128, 128);
+            
+            g.Dispose();
+            toResize.Dispose();
+            return (Image)b;
+        }
+        private Task<Image> resizeImageAsync(string path)
+        {
+            return Task.Run<Image>(() =>
+            {
+                return resizeImage(path);
+            });
+        }
+        private async Task UpdateFileViewAsync()
+        {
+            CleanIcons();
             //NOTE elements in array has index one less that elements in FileView
             //This caused by element ... that returns back in directory
             File_View.Items.Clear();
@@ -50,20 +80,56 @@ namespace Super_Image_Viewer
             {
                 File_View.Items.Add(fsv.GetDirectories()[i].Name, 0);
             }
+            List<int> positions = new List<int>();
+            List<string> names = new List<string>();
             for (int i = 0; i < fsv.GetFiles().Length; i++)
             {
                 string file_name = fsv.GetFiles()[i].Name;
                 if (fsv.IsImage(file_name)) {
-                    File_View.Items.Add(file_name, 2);
+                    if(ProgrammParametrs.ShowImagePreview==false)
+                        File_View.Items.Add(file_name, 2);
+                    else
+                    {
+                        //int pos = AddIcons(Image.FromFile(fsv.GetFiles()[i].FullName));
+                        Image resizedImage = await resizeImageAsync(fsv.GetFiles()[i].FullName);
+                        //int pos = AddIcons(resizedImage(fsv.GetFiles()[i].FullName));
+                        int pos = AddIcons(resizedImage);
+                        positions.Add(pos);
+                        names.Add(file_name);
+                        if (positions.Count > 4)
+                        {
+                            for (int count = 0; count < positions.Count; count++)
+                            {
+                                File_View.Items.Add(names[count], positions[count]);
+                            }
+                            positions.Clear();
+                            names.Clear();
+                        }
+                    }
                 }
                 else
                 {
                     File_View.Items.Add(file_name, 1);
                 }
             }
+
+            Console.WriteLine($"POS:{positions.Count} NAME:{names.Count}");
+            //Console.WriteLine(positions.Count);
+            for(int i = 0; i < positions.Count; i++)
+            {
+                File_View.Items.Add(names[i], positions[i]);
+            }
         }
 
-        private void File_View_DoubleClick(object sender, EventArgs e)
+        //private Task UpdateFileViewAsync()
+        //{
+        //    return Task.Run(() =>
+        //    {
+        //        UpdateFileView();
+        //    });
+        //}
+
+        private async void File_View_DoubleClick(object sender, EventArgs e)
         {
             if (File_View.SelectedIndices.Count > 0)
             {
@@ -76,7 +142,7 @@ namespace Super_Image_Viewer
                     Console.WriteLine(1);
                 }
             }
-            UpdateFileView();
+            await UpdateFileViewAsync();
         }
     }
 }

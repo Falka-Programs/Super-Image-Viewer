@@ -94,7 +94,7 @@ namespace Super_Image_Viewer
                 string[] splitted_name = name.Split('.');
                 if (splitted_name.Length > 1)
                 {
-                    if(ImageFormats.Contains(splitted_name[splitted_name.Length - 1]))
+                    if(ImageFormats.Contains(splitted_name[splitted_name.Length - 1].ToLower()))
                     {
                         return true;
                     }
