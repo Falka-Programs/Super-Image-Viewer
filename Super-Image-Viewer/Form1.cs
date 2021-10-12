@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 
+using Super_Image_Viewer.Models;    
+
 namespace Super_Image_Viewer
 {
     public partial class Form1 : Form
@@ -234,16 +236,28 @@ namespace Super_Image_Viewer
 
         private void item_menuStrip_Opening(object sender, CancelEventArgs e)
         {
-            if (fsv.fileOperation == null)
+            if(fsv.fileOperation.operation != Operations.None)
+            {
+                item_menuStrip.Items[2].Enabled = true;
+            }
+            else
+            {
+                item_menuStrip.Items[2].Enabled = false;
+            }
+
+            if(File_View.SelectedIndices.Count > 0)
+            {
+                item_menuStrip.Items[0].Enabled = true;
+                item_menuStrip.Items[1].Enabled = true;
+                item_menuStrip.Items[3].Enabled = true;
+            }
+            else
             {
                 item_menuStrip.Items[0].Enabled = false;
                 item_menuStrip.Items[1].Enabled = false;
-                item_menuStrip.Items[2].Enabled = false;
-            }
-            if (File_View.SelectedIndices.Count > 0)
-                item_menuStrip.Items[3].Enabled = true;
-            else
                 item_menuStrip.Items[3].Enabled = false;
+            }
+
         }
 
         private async void deleteToolStripMenuItem_Click(object sender, EventArgs e)
@@ -271,6 +285,42 @@ namespace Super_Image_Viewer
             fsv.previousPath = null;
             
             await UpdateFileViewAsync();
+        }
+
+        private void copyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            fsv.fileOperation.FilePathes.Clear();
+            if(File_View.SelectedIndices.Count > 0)
+            {
+                for(int i = 0; i < File_View.SelectedIndices.Count; i++)
+                {
+                    fsv.fileOperation.FilePathes.Add(fsv.GetFilePath(File_View.SelectedItems[i].Text));
+                }
+                fsv.fileOperation.operation = Operations.Copy;
+            }
+        }
+
+        private async void pasteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(fsv.fileOperation.operation == Operations.Copy)
+            {
+                bool tg = false;
+                for(int i = 0; i < fsv.fileOperation.FilePathes.Count; i++)
+                {
+                    try
+                    {
+                        fsv.Copy(fsv.fileOperation.FilePathes[i], fsv.CurrentPath);
+                    }
+                    catch(Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                        tg = true;
+                    }
+                }
+                if (tg)
+                    MessageBox.Show("Directories skipped", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                await UpdateFileViewAsync();
+            }
         }
     }
 

@@ -4,9 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using System.Drawing;
-using System.Threading;
-
+using System.IO;
 namespace Super_Image_Viewer
 {
     static class Program

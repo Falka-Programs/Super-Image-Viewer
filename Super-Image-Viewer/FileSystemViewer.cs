@@ -56,6 +56,7 @@ namespace Super_Image_Viewer
         public FileSystemViewer()
         {
             CurrentPath = Directory.GetCurrentDirectory();
+            fileOperation = new FileOperation();
         }
         public FileSystemViewer(string path)
         {
@@ -67,7 +68,38 @@ namespace Super_Image_Viewer
             return Files;
         }
 
-        
+        public void Copy(string path1,string path2)
+        {
+            if (Directory.Exists(path2))
+            {
+                if (File.Exists(path1))
+                {
+                    string[] frm = path1.Split('\\');
+                    string OriginalfileName = frm[frm.Length - 1];
+                    string fileName = frm[frm.Length - 1];
+                    string newPath2 = path2 +fileName;
+                    int counter = 1;
+                    while(File.Exists(newPath2))
+                    {
+                        if (fileName.Split('.').Length > 1)
+                        {
+                            fileName = OriginalfileName.Split('.')[OriginalfileName.Split('.').Length-2] + counter.ToString() +'.'+ OriginalfileName.Split('.')[OriginalfileName.Split('.').Length-1];
+                        }
+                        else
+                            return;
+
+                        newPath2 = path2 + fileName;
+                        counter++;
+                    }
+                    File.Copy(path1,newPath2);
+                    
+                }else if (Directory.Exists(path1))
+                {
+                    throw new ArgumentException("Directory copy isn`t supported");
+                }
+
+            }
+        }
         public DirectoryInfo[] GetDirectories()
         {
             return Directories;

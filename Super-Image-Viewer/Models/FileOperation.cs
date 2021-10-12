@@ -9,10 +9,17 @@ namespace Super_Image_Viewer.Models
     enum Operations {
     Copy,
     Paste,
-    Cut
+    Cut,
+    None
     }
     internal class FileOperation
     {
-        public string FilePath { get; set; }
+        public List<string> FilePathes { get; set; }
+        public Operations operation;
+        public FileOperation()
+        {
+            FilePathes = new List<string>();
+            operation = Operations.None;
+        }
     }
 }
