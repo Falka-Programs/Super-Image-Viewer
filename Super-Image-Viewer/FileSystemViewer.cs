@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using Super_Image_Viewer.Models;
+
 
 namespace Super_Image_Viewer
 {
@@ -29,8 +31,9 @@ namespace Super_Image_Viewer
             }
         }
         private string currentPath;
+        public string previousPath;
 
-
+        public FileOperation fileOperation;
 
         private DirectoryInfo[] Directories;
         private FileInfo[] Files;
@@ -64,12 +67,14 @@ namespace Super_Image_Viewer
             return Files;
         }
 
+        
         public DirectoryInfo[] GetDirectories()
         {
             return Directories;
         }
         public void MoveTo(string folderName)
         {
+            previousPath = CurrentPath;
             if(folderName == "..\\")
             {
                 string[] tmp = CurrentPath.Split('\\');
@@ -120,10 +125,30 @@ namespace Super_Image_Viewer
             else
                 return false;
         }
-
+        public void DeleteInCurrentDirectory(string directory)
+        {
+            if (Directory.Exists(CurrentPath + directory))
+            {
+                Directory.Delete(CurrentPath + directory, true);
+            }
+        }
+        public void DeleteInCurrentFile(string file)
+        {
+            if (File.Exists(CurrentPath +file))
+            {
+                File.Delete(CurrentPath + file);
+            }
+        }
         public bool IsBackAvaible()
         {
             if (currentPath.Split('\\').Length > 2)
+                return true;
+            else
+                return false;
+        }
+        public bool IsFrontAvaible()
+        {
+            if (previousPath != null && !String.IsNullOrWhiteSpace(previousPath))
                 return true;
             else
                 return false;

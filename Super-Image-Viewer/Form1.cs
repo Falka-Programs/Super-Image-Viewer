@@ -20,6 +20,7 @@ namespace Super_Image_Viewer
             InitializeComponent();
             fsv = new FileSystemViewer();
             fsv.MoveTo("..\\");
+            fsv.previousPath = null;
             path_textBox.Text = fsv.CurrentPath;
         }
 
@@ -83,12 +84,14 @@ namespace Super_Image_Viewer
             //This caused by element ..\ that returns back in directory
             File_View.Items.Clear();
             File_View.Items.Add(@"..\", 0);
+            string cur_path = fsv.CurrentPath;
             for (int i = 0; i < fsv.GetDirectories().Length; i++)
             {
                 File_View.Items.Add(fsv.GetDirectories()[i].Name, 0);
             }
             List<int> positions = new List<int>();
             List<string> names = new List<string>();
+            
             for (int i = 0; i < fsv.GetFiles().Length; i++)
             {
                 string file_name = fsv.GetFiles()[i].Name;
@@ -101,6 +104,8 @@ namespace Super_Image_Viewer
                         int pos = AddIcons(resizedImage);
                         positions.Add(pos);
                         names.Add(file_name);
+                        if (fsv.CurrentPath != cur_path)
+                            return;
                         if (positions.Count > 4)
                         {
                             for (int count = 0; count < positions.Count; count++)
@@ -121,6 +126,18 @@ namespace Super_Image_Viewer
             {
                 File_View.Items.Add(names[i], positions[i]);
             }
+
+            if (fsv.IsBackAvaible())
+            {
+                back_button.Enabled = true;
+            }
+            else
+                back_button.Enabled = false;
+            if (fsv.IsFrontAvaible())
+            {
+                front_button.Enabled = true;
+            }else
+                front_button.Enabled = false;
         }
         private void ShowImage(string path)
         {
@@ -142,9 +159,16 @@ namespace Super_Image_Viewer
             {
                 if (File_View.SelectedItems[0].ImageIndex == 0)
                 {
-                    fsv.MoveTo(File_View.SelectedItems[0].Text);
-                    path_textBox.Text = fsv.CurrentPath;
-                }
+                    try
+                    {
+                        fsv.MoveTo(File_View.SelectedItems[0].Text);
+                        path_textBox.Text = fsv.CurrentPath;
+                    }
+                    catch
+                    {
+                        MessageBox.Show("You don`t have permissions to access this folder!","Warning",MessageBoxButtons.OK,MessageBoxIcon.Warning);
+                    }
+                    }
                 else if (File_View.SelectedItems[0].ImageIndex == 1)
                     MessageBox.Show("Current format isn`t supported!");
                 else if (File_View.SelectedItems[0].ImageIndex > 1)
@@ -193,6 +217,59 @@ namespace Super_Image_Viewer
                 back_button.Enabled = false;
             fsv.MoveTo("..\\");
             path_textBox.Text = fsv.CurrentPath;
+            await UpdateFileViewAsync();
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if(keyData == Keys.Escape)
+            {
+                if (tabControl.SelectedIndex != 0)
+                {
+                    tabControl.SelectedIndex = 0;
+                }
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void item_menuStrip_Opening(object sender, CancelEventArgs e)
+        {
+            if (fsv.fileOperation == null)
+            {
+                item_menuStrip.Items[0].Enabled = false;
+                item_menuStrip.Items[1].Enabled = false;
+                item_menuStrip.Items[2].Enabled = false;
+            }
+            if (File_View.SelectedIndices.Count > 0)
+                item_menuStrip.Items[3].Enabled = true;
+            else
+                item_menuStrip.Items[3].Enabled = false;
+        }
+
+        private async void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (File_View.SelectedIndices.Count > 0)
+            {
+                DialogResult df = MessageBox.Show($"Delete {File_View.SelectedIndices.Count} files?", "Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (df == DialogResult.Yes)
+                {
+                    for (int i = 0; i < File_View.SelectedIndices.Count; i++)
+                    {
+                        if (File_View.SelectedItems[i].ImageIndex == 0)
+                            fsv.DeleteInCurrentDirectory(File_View.SelectedItems[i].Text);
+                        if (File_View.SelectedItems[i].ImageIndex >= 1)
+                            fsv.DeleteInCurrentFile(File_View.SelectedItems[i].Text);
+                    }
+                    await UpdateFileViewAsync();
+                }
+            }
+        }
+
+        private async void front_button_Click(object sender, EventArgs e)
+        {
+            fsv.CurrentPath = fsv.previousPath;
+            fsv.previousPath = null;
+            
             await UpdateFileViewAsync();
         }
     }
