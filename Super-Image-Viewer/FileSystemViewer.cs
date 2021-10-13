@@ -67,7 +67,10 @@ namespace Super_Image_Viewer
         {
             return Files;
         }
-
+        public void Update()
+        {
+            CurrentPath = CurrentPath;
+        }
         public void Copy(string path1,string path2)
         {
             if (Directory.Exists(path2))
@@ -99,6 +102,56 @@ namespace Super_Image_Viewer
                 }
 
             }
+        }
+        public Task CopyAsync(string path1, string path2)
+        {
+            return Task.Run(() =>
+            {
+                Copy(path1,path2);
+            });
+        }
+
+
+        public void Cut(string path1,string path2)
+        {
+            if (Directory.Exists(path2))
+            {
+                if (File.Exists(path1))
+                {
+                    string[] frm = path1.Split('\\');
+                    string OriginalfileName = frm[frm.Length - 1];
+                    string fileName = frm[frm.Length - 1];
+                    string newPath2 = path2 + fileName;
+                    int counter = 1;
+                    while (File.Exists(newPath2))
+                    {
+                        if (fileName.Split('.').Length > 1)
+                        {
+                            fileName = OriginalfileName.Split('.')[OriginalfileName.Split('.').Length - 2] + counter.ToString() + '.' + OriginalfileName.Split('.')[OriginalfileName.Split('.').Length - 1];
+                        }
+                        else
+                            return;
+
+                        newPath2 = path2 + fileName;
+                        counter++;
+                    }
+                    File.Copy(path1, newPath2);
+                    File.Delete(path1);
+
+                }
+                else if (Directory.Exists(path1))
+                {
+                    throw new ArgumentException("Directory cut isn`t supported");
+                }
+
+            }
+        }
+        public Task CutAsync(string path1, string path2)
+        {
+            return Task.Run(() =>
+            {
+                Cut(path1, path2);
+            });
         }
         public DirectoryInfo[] GetDirectories()
         {

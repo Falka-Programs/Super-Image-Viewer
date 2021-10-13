@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
-
+using System.Threading;
 using Super_Image_Viewer.Models;    
 
 namespace Super_Image_Viewer
@@ -81,6 +81,7 @@ namespace Super_Image_Viewer
 
         private async Task UpdateFileViewAsync()
         {
+            fsv.Update();
             CleanIcons();
             //NOTE elements in array has index one less that elements in FileView
             //This caused by element ..\ that returns back in directory
@@ -309,7 +310,8 @@ namespace Super_Image_Viewer
                 {
                     try
                     {
-                        fsv.Copy(fsv.fileOperation.FilePathes[i], fsv.CurrentPath);
+                        
+                        await fsv.CopyAsync(fsv.fileOperation.FilePathes[i], fsv.CurrentPath);
                     }
                     catch(Exception ex)
                     {
@@ -320,6 +322,39 @@ namespace Super_Image_Viewer
                 if (tg)
                     MessageBox.Show("Directories skipped", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 await UpdateFileViewAsync();
+            }
+            else if (fsv.fileOperation.operation == Operations.Cut)
+            {
+                bool tg = false;
+                for (int i = 0; i < fsv.fileOperation.FilePathes.Count; i++)
+                {
+                    try
+                    {
+
+                        await fsv.CutAsync(fsv.fileOperation.FilePathes[i], fsv.CurrentPath);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                        tg = true;
+                    }
+                }
+                if (tg)
+                    MessageBox.Show("Directories skipped", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                await UpdateFileViewAsync();
+            }
+        }
+
+        private void cutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            fsv.fileOperation.FilePathes.Clear();
+            if (File_View.SelectedIndices.Count > 0)
+            {
+                for (int i = 0; i < File_View.SelectedIndices.Count; i++)
+                {
+                    fsv.fileOperation.FilePathes.Add(fsv.GetFilePath(File_View.SelectedItems[i].Text));
+                }
+                fsv.fileOperation.operation = Operations.Cut;
             }
         }
     }
