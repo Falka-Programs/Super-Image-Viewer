@@ -44,13 +44,21 @@ namespace Super_Image_Viewer
             this.front_button = new System.Windows.Forms.Button();
             this.back_button = new System.Windows.Forms.Button();
             this.textBox2 = new System.Windows.Forms.TextBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.pictureBox = new System.Windows.Forms.PictureBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.image_left_navigationButton = new System.Windows.Forms.Button();
+            this.image_fornt_navigationButton = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.programmToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.imageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveToToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.convertToToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.drives_listBox = new System.Windows.Forms.ListBox();
             this.tabControl.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -59,7 +67,10 @@ namespace Super_Image_Viewer
             this.tabPage1.SuspendLayout();
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
+            this.groupBox4.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl
@@ -77,7 +88,7 @@ namespace Super_Image_Viewer
             // 
             this.tabPage2.Controls.Add(this.groupBox1);
             this.tabPage2.Controls.Add(this.groupBox3);
-            this.tabPage2.Controls.Add(this.groupBox2);
+            this.tabPage2.Controls.Add(this.panel1);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -88,24 +99,26 @@ namespace Super_Image_Viewer
             // 
             // groupBox1
             // 
+            this.groupBox1.BackColor = System.Drawing.Color.PaleGoldenrod;
             this.groupBox1.Controls.Add(this.File_View);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox1.Location = new System.Drawing.Point(182, 66);
+            this.groupBox1.Location = new System.Drawing.Point(134, 66);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1387, 652);
+            this.groupBox1.Size = new System.Drawing.Size(1435, 652);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "FileViewer";
             // 
             // File_View
             // 
+            this.File_View.BackColor = System.Drawing.Color.LemonChiffon;
             this.File_View.ContextMenuStrip = this.item_menuStrip;
             this.File_View.Dock = System.Windows.Forms.DockStyle.Fill;
             this.File_View.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.File_View.HideSelection = false;
             this.File_View.Location = new System.Drawing.Point(3, 16);
             this.File_View.Name = "File_View";
-            this.File_View.Size = new System.Drawing.Size(1381, 633);
+            this.File_View.Size = new System.Drawing.Size(1429, 633);
             this.File_View.TabIndex = 1;
             this.File_View.UseCompatibleStateImageBehavior = false;
             this.File_View.DoubleClick += new System.EventHandler(this.File_View_DoubleClick);
@@ -118,14 +131,14 @@ namespace Super_Image_Viewer
             this.pasteToolStripMenuItem,
             this.deleteToolStripMenuItem});
             this.item_menuStrip.Name = "item_menuStrip";
-            this.item_menuStrip.Size = new System.Drawing.Size(181, 114);
+            this.item_menuStrip.Size = new System.Drawing.Size(145, 92);
             this.item_menuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.item_menuStrip_Opening);
             // 
             // copyToolStripMenuItem
             // 
             this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
             this.copyToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.copyToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.copyToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.copyToolStripMenuItem.Text = "Copy";
             this.copyToolStripMenuItem.Click += new System.EventHandler(this.copyToolStripMenuItem_Click);
             // 
@@ -133,7 +146,7 @@ namespace Super_Image_Viewer
             // 
             this.cutToolStripMenuItem.Name = "cutToolStripMenuItem";
             this.cutToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.cutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.cutToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.cutToolStripMenuItem.Text = "Cut";
             this.cutToolStripMenuItem.Click += new System.EventHandler(this.cutToolStripMenuItem_Click);
             // 
@@ -141,7 +154,7 @@ namespace Super_Image_Viewer
             // 
             this.pasteToolStripMenuItem.Name = "pasteToolStripMenuItem";
             this.pasteToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.pasteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.pasteToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.pasteToolStripMenuItem.Text = "Paste";
             this.pasteToolStripMenuItem.Click += new System.EventHandler(this.pasteToolStripMenuItem_Click);
             // 
@@ -149,20 +162,21 @@ namespace Super_Image_Viewer
             // 
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
             this.deleteToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.deleteToolStripMenuItem.Text = "Delete";
             this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 
             // groupBox3
             // 
+            this.groupBox3.BackColor = System.Drawing.Color.LemonChiffon;
             this.groupBox3.Controls.Add(this.path_textBox);
             this.groupBox3.Controls.Add(this.front_button);
             this.groupBox3.Controls.Add(this.back_button);
             this.groupBox3.Controls.Add(this.textBox2);
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBox3.Location = new System.Drawing.Point(182, 3);
+            this.groupBox3.Location = new System.Drawing.Point(134, 3);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(1387, 63);
+            this.groupBox3.Size = new System.Drawing.Size(1435, 63);
             this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
             // 
@@ -172,7 +186,7 @@ namespace Super_Image_Viewer
             this.path_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.path_textBox.Location = new System.Drawing.Point(59, 16);
             this.path_textBox.Name = "path_textBox";
-            this.path_textBox.Size = new System.Drawing.Size(1024, 40);
+            this.path_textBox.Size = new System.Drawing.Size(1014, 40);
             this.path_textBox.TabIndex = 0;
             this.path_textBox.Text = "C:\\";
             this.path_textBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.path_textBox_KeyDown);
@@ -206,21 +220,11 @@ namespace Super_Image_Viewer
             // 
             this.textBox2.Dock = System.Windows.Forms.DockStyle.Right;
             this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox2.Location = new System.Drawing.Point(1149, 16);
+            this.textBox2.Location = new System.Drawing.Point(1207, 16);
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(235, 31);
+            this.textBox2.Size = new System.Drawing.Size(225, 31);
             this.textBox2.TabIndex = 1;
             this.textBox2.Text = "Search";
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Left;
-            this.groupBox2.Location = new System.Drawing.Point(3, 3);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(179, 715);
-            this.groupBox2.TabIndex = 1;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "groupBox2";
             // 
             // tabPage1
             // 
@@ -256,6 +260,8 @@ namespace Super_Image_Viewer
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.image_left_navigationButton);
+            this.groupBox4.Controls.Add(this.image_fornt_navigationButton);
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox4.Location = new System.Drawing.Point(0, 0);
             this.groupBox4.Name = "groupBox4";
@@ -264,10 +270,34 @@ namespace Super_Image_Viewer
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Parametrs";
             // 
+            // image_left_navigationButton
+            // 
+            this.image_left_navigationButton.Dock = System.Windows.Forms.DockStyle.Right;
+            this.image_left_navigationButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.image_left_navigationButton.Location = new System.Drawing.Point(1419, 16);
+            this.image_left_navigationButton.Name = "image_left_navigationButton";
+            this.image_left_navigationButton.Size = new System.Drawing.Size(75, 35);
+            this.image_left_navigationButton.TabIndex = 1;
+            this.image_left_navigationButton.Text = "<";
+            this.image_left_navigationButton.UseVisualStyleBackColor = true;
+            // 
+            // image_fornt_navigationButton
+            // 
+            this.image_fornt_navigationButton.Dock = System.Windows.Forms.DockStyle.Right;
+            this.image_fornt_navigationButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.image_fornt_navigationButton.Location = new System.Drawing.Point(1494, 16);
+            this.image_fornt_navigationButton.Name = "image_fornt_navigationButton";
+            this.image_fornt_navigationButton.Size = new System.Drawing.Size(75, 35);
+            this.image_fornt_navigationButton.TabIndex = 0;
+            this.image_fornt_navigationButton.Text = ">";
+            this.image_fornt_navigationButton.UseVisualStyleBackColor = true;
+            // 
             // menuStrip1
             // 
+            this.menuStrip1.BackColor = System.Drawing.Color.LightYellow;
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.programmToolStripMenuItem});
+            this.programmToolStripMenuItem,
+            this.imageToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1580, 24);
@@ -280,16 +310,76 @@ namespace Super_Image_Viewer
             this.programmToolStripMenuItem.Size = new System.Drawing.Size(76, 20);
             this.programmToolStripMenuItem.Text = "Programm";
             // 
+            // imageToolStripMenuItem
+            // 
+            this.imageToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.saveToToolStripMenuItem,
+            this.convertToToolStripMenuItem});
+            this.imageToolStripMenuItem.Name = "imageToolStripMenuItem";
+            this.imageToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
+            this.imageToolStripMenuItem.Text = "Image";
+            // 
+            // saveToToolStripMenuItem
+            // 
+            this.saveToToolStripMenuItem.Name = "saveToToolStripMenuItem";
+            this.saveToToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveToToolStripMenuItem.Text = "SaveTo";
+            this.saveToToolStripMenuItem.Click += new System.EventHandler(this.saveToToolStripMenuItem_Click);
+            // 
+            // convertToToolStripMenuItem
+            // 
+            this.convertToToolStripMenuItem.Name = "convertToToolStripMenuItem";
+            this.convertToToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.convertToToolStripMenuItem.Text = "ConvertTo";
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.Beige;
+            this.panel1.Controls.Add(this.groupBox2);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panel1.ForeColor = System.Drawing.Color.Black;
+            this.panel1.Location = new System.Drawing.Point(3, 3);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(131, 715);
+            this.panel1.TabIndex = 3;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.drives_listBox);
+            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox2.Location = new System.Drawing.Point(0, 0);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(131, 175);
+            this.groupBox2.TabIndex = 0;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "DriveList";
+            // 
+            // drives_listBox
+            // 
+            this.drives_listBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.drives_listBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.drives_listBox.FormattingEnabled = true;
+            this.drives_listBox.ItemHeight = 29;
+            this.drives_listBox.Location = new System.Drawing.Point(3, 16);
+            this.drives_listBox.Name = "drives_listBox";
+            this.drives_listBox.Size = new System.Drawing.Size(125, 156);
+            this.drives_listBox.TabIndex = 0;
+            this.drives_listBox.SelectedIndexChanged += new System.EventHandler(this.drives_listBox_SelectedIndexChanged);
+            // 
             // Form1
             // 
+            this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1580, 771);
             this.Controls.Add(this.tabControl);
             this.Controls.Add(this.menuStrip1);
             this.Name = "Form1";
             this.Text = "Super Image Viewer";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.DragDrop += new System.Windows.Forms.DragEventHandler(this.Form1_DragDrop);
+            this.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form1_DragEnter);
             this.tabControl.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
@@ -299,8 +389,11 @@ namespace Super_Image_Viewer
             this.tabPage1.ResumeLayout(false);
             this.groupBox5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
+            this.groupBox4.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -313,7 +406,6 @@ namespace Super_Image_Viewer
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.TextBox path_textBox;
-        private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.ListView File_View;
         private System.Windows.Forms.MenuStrip menuStrip1;
@@ -329,6 +421,15 @@ namespace Super_Image_Viewer
         private System.Windows.Forms.ToolStripMenuItem cutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem pasteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
+        private System.Windows.Forms.Button image_left_navigationButton;
+        private System.Windows.Forms.Button image_fornt_navigationButton;
+        private System.Windows.Forms.ToolStripMenuItem imageToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveToToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem convertToToolStripMenuItem;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.ListBox drives_listBox;
     }
 }
 

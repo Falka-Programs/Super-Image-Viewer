@@ -23,15 +23,27 @@ namespace Super_Image_Viewer
             fsv = new FileSystemViewer();
             fsv.MoveTo("..\\");
             fsv.previousPath = null;
-            path_textBox.Text = fsv.CurrentPath;
         }
 
         private async void Form1_Load(object sender, EventArgs e)
         {
             LoadIcons();
+            LoadDrives();
+            fsv.GoToDefaultPath();
+            Console.WriteLine(fsv.CurrentPath);
             await UpdateFileViewAsync();
+            
         }
-        
+        private void LoadDrives()
+        {
+            string[] drives = fsv.GetDrivesLetters();
+            foreach(var item in drives)
+            {
+                drives_listBox.Items.Add(item);
+            }
+            if (drives_listBox.Items.Count > 0)
+                drives_listBox.SelectedIndex = 0;
+        }
         private void LoadIcons()
         {
             iList = new ImageList();
@@ -42,6 +54,7 @@ namespace Super_Image_Viewer
             iList.Images.Add(Image.FromFile("../../Images/image.png"));
             File_View.LargeImageList = iList;
         }
+
         private int AddIcons(Image img)
         {
             iList.Images.Add(img);
@@ -87,6 +100,7 @@ namespace Super_Image_Viewer
             //This caused by element ..\ that returns back in directory
             File_View.Items.Clear();
             File_View.Items.Add(@"..\", 0);
+            path_textBox.Text = fsv.CurrentPath;
             string cur_path = fsv.CurrentPath;
             for (int i = 0; i < fsv.GetDirectories().Length; i++)
             {
@@ -165,7 +179,7 @@ namespace Super_Image_Viewer
                     try
                     {
                         fsv.MoveTo(File_View.SelectedItems[0].Text);
-                        path_textBox.Text = fsv.CurrentPath;
+                       // path_textBox.Text = fsv.CurrentPath;
                     }
                     catch
                     {
@@ -185,7 +199,7 @@ namespace Super_Image_Viewer
         delegate void SetActiveTabCallback(int tab);
         private void SetActiveTab(int tab)
         {
-            if (this.path_textBox.InvokeRequired)
+            if (this.tabControl.InvokeRequired)
             {
                 SetActiveTabCallback d = new SetActiveTabCallback(SetActiveTab);
                 this.Invoke(d, new object[] { tab });
@@ -202,7 +216,7 @@ namespace Super_Image_Viewer
             {
                 try
                 {
-                    fsv.CurrentPath = path_textBox.Text;
+                    //fsv.CurrentPath = path_textBox.Text;
                     await UpdateFileViewAsync();
 
                 }
@@ -219,7 +233,7 @@ namespace Super_Image_Viewer
             if (fsv.IsBackAvaible() == false)
                 back_button.Enabled = false;
             fsv.MoveTo("..\\");
-            path_textBox.Text = fsv.CurrentPath;
+            //path_textBox.Text = fsv.CurrentPath;
             await UpdateFileViewAsync();
         }
 
@@ -355,6 +369,66 @@ namespace Super_Image_Viewer
                     fsv.fileOperation.FilePathes.Add(fsv.GetFilePath(File_View.SelectedItems[i].Text));
                 }
                 fsv.fileOperation.operation = Operations.Cut;
+            }
+        }
+
+        private async void Form1_DragDrop(object sender, DragEventArgs e)
+        {
+            string[] files = e.Data.GetData(DataFormats.FileDrop) as string[];
+            try
+            {
+                pictureBox.Image = Image.FromFile(files[files.Length - 1]);
+            }
+            catch
+            {
+                MessageBox.Show("File format not supported","Warning",MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+                string[] data_path = files[files.Length - 1].Split('\\');
+            if (data_path.Length > 2)
+            {
+                string path = "";
+                for(int i = 0; i < data_path.Length-1; i++)
+                    path += data_path[i] + '\\';
+                try
+                {
+                    fsv.CurrentPath = path;
+                    fsv.CurrentImagePath = path;
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show($"Internal error\n {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            SetActiveTab(1);
+            await UpdateFileViewAsync();
+        }
+
+        private void Form1_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                e.Effect = DragDropEffects.Copy;
+            else
+                e.Effect = DragDropEffects.None;
+        }
+
+        private void saveToToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+        }
+
+        private async void drives_listBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (drives_listBox.SelectedIndex != -1)
+            {
+                try
+                {
+                    fsv.CurrentPath = drives_listBox.SelectedItem.ToString();
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show($"Internal error.\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                await UpdateFileViewAsync();
             }
         }
     }

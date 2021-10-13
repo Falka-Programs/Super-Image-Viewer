@@ -12,6 +12,7 @@ namespace Super_Image_Viewer
     class FileSystemViewer
     {
         private string[] ImageFormats = { "png","jpg","jpeg","gif" };
+        public string CurrentImagePath;
         public string CurrentPath { get
             {
                 return currentPath;
@@ -110,7 +111,10 @@ namespace Super_Image_Viewer
                 Copy(path1,path2);
             });
         }
-
+        public void GoToDefaultPath()
+        {
+            CurrentPath = Directory.GetCurrentDirectory();
+        }
 
         public void Cut(string path1,string path2)
         {
@@ -237,6 +241,26 @@ namespace Super_Image_Viewer
                 return true;
             else
                 return false;
+        }
+
+        public string[] GetDrivesLetters()
+        {
+            DriveInfo[] drives = DriveInfo.GetDrives();
+            int size = 0;
+            for(int i = 0; i < drives.Length; i++)
+                if(drives[i].DriveType == DriveType.Fixed)
+                    size++;
+
+            string[] tmp = new string[size];
+            int currentId = 0;
+            for (int i = 0; i < drives.Length; i++)
+                if (drives[i].DriveType == DriveType.Fixed)
+                {
+                    tmp[currentId] = drives[i].RootDirectory.FullName;
+                    currentId++;
+                }
+            
+            return tmp;
         }
     }
 }
