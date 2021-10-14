@@ -18,7 +18,7 @@ namespace Super_Image_Viewer
             try
             {
                 Document = XDocument.Load(filePath);
-                List<XElement> elements = Document.Root.Element("parametrs").Elements("parametr").ToList();
+                List<XElement> elements = Document.Root?.Element("parametrs")?.Elements("parametr")?.ToList();
                 if (elements.Count > 1)
                 {
                     if (elements[0].Value == "true")
@@ -36,6 +36,16 @@ namespace Super_Image_Viewer
                 LoadDefaults();
             }
         }
+
+        public void UpdateSetting()
+        {
+            List<XElement> elements = Document.Root.Element("parametrs").Elements("parametr").ToList();
+            elements[0] = new XElement(ShowImagePreview.ToString());
+            elements[1] = new XElement(IntelegentImagePreview.ToString());
+            Document.Save(filePath);
+        }
+
+        
         private void LoadDefaults()
         {
             ShowImagePreview = true;

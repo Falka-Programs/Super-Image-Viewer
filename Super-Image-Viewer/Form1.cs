@@ -63,6 +63,17 @@ namespace Super_Image_Viewer
             iList.Images.Add(img);
             return iList.Images.Count-1;
         }
+        //Action action = () =>
+        //{
+        //    this.tabControl.SelectedIndex = tab;
+        //};
+        //    if (this.tabControl.InvokeRequired)
+        //    {
+        //    Invoke(action);
+        //}
+        //    else{
+        //    action();
+        //}
         private void CleanIcons()
         {
             iList.Dispose();
@@ -94,15 +105,45 @@ namespace Super_Image_Viewer
                 return resizeImage(path);
             });
         }
+
+        //private Task UpdateFileViewAsync()
+        //{
+        //    return Task.Run(() =>
+        //    {
+        //        UpdateFile();
+        //    });
+        //}
+        private void AddImage(string file_name)
+        {
+            File_View.Items.Add(file_name, 2);
+        }
+        private Task AddImageAsync(string file_name)
+        {
+            //if (textbox1.InvokeRequired)
+            //{
+            //    textbox1.Invoke(new MethodInvoker(delegate { name = textbox1.text; }));
+            //}
+            return Task.Run(() =>
+                {
+                if (File_View.InvokeRequired)
+                    File_View.Invoke(new MethodInvoker(delegate { File_View.Items.Add(file_name, 2); }));
+                        //File_View.Items.Invoke(.Add(file_name, 2);
+                else
+                    File_View.Items.Add(file_name, 2);
+                });
+
+        }
         private async Task UpdateFileViewAsync()
         {
             fsv.Update();
             CleanIcons();
             //NOTE elements in array has index one less that elements in FileView
             //This caused by element ..\ that returns back in directory
-            File_View.Items.Clear();
-            File_View.Items.Add(@"..\", 0);
-            path_textBox.Text = fsv.CurrentPath;
+           
+                File_View.Items.Clear();
+                File_View.Items.Add(@"..\", 0);
+                path_textBox.Text = fsv.CurrentPath;
+            
             string cur_path = fsv.CurrentPath;
             for (int i = 0; i < fsv.GetDirectories().Length; i++)
             {
@@ -110,16 +151,26 @@ namespace Super_Image_Viewer
             }
             List<int> positions = new List<int>();
             List<string> names = new List<string>();
-            
+            int images_count = 0;
+            if (programmParametrs.IntelegentImagePreview == true)
+            {
+                for (int i = 0; i < fsv.GetFiles().Length; i++)
+                {
+                    string file_name = fsv.GetFiles()[i].Name;
+                    if (fsv.IsImage(file_name))
+                        images_count++;
+                }
+            }
             for (int i = 0; i < fsv.GetFiles().Length; i++)
             {
                 string file_name = fsv.GetFiles()[i].Name;
                 if (fsv.IsImage(file_name)) {
-                    if(programmParametrs.ShowImagePreview==false)
+                    if (programmParametrs.ShowImagePreview == false || (programmParametrs.IntelegentImagePreview == true && images_count > 20))
                         File_View.Items.Add(file_name, 2);
                     else
                     {
                         Image resizedImage = await resizeImageAsync(fsv.GetFiles()[i].FullName);
+                        //Image resizedImage = resizeImage(fsv.GetFiles()[i].FullName);
                         int pos = AddIcons(resizedImage);
                         positions.Add(pos);
                         names.Add(file_name);
@@ -489,6 +540,18 @@ namespace Super_Image_Viewer
                     MessageBox.Show($"Internal error.\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 await UpdateFileViewAsync();
+            }
+        }
+
+        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SettingsForm sf= new SettingsForm();
+            sf.IntelegentPreviewStatus = programmParametrs.IntelegentImagePreview;
+            sf.ImagePreviewStatus = programmParametrs.ShowImagePreview;
+            if (sf.ShowDialog() == DialogResult.OK)
+            {
+                programmParametrs.IntelegentImagePreview = sf.IntelegentPreviewStatus;
+                programmParametrs.ShowImagePreview = sf.ImagePreviewStatus;
             }
         }
     }

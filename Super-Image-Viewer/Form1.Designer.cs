@@ -59,6 +59,7 @@ namespace Super_Image_Viewer
             this.saveToToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.listBox1 = new System.Windows.Forms.ListBox();
+            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -343,6 +344,8 @@ namespace Super_Image_Viewer
             // 
             // programmToolStripMenuItem
             // 
+            this.programmToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.settingsToolStripMenuItem});
             this.programmToolStripMenuItem.Name = "programmToolStripMenuItem";
             this.programmToolStripMenuItem.Size = new System.Drawing.Size(76, 20);
             this.programmToolStripMenuItem.Text = "Programm";
@@ -370,6 +373,13 @@ namespace Super_Image_Viewer
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(131, 540);
             this.listBox1.TabIndex = 1;
+            // 
+            // settingsToolStripMenuItem
+            // 
+            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.settingsToolStripMenuItem.Text = "Settings";
+            this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -435,6 +445,7 @@ namespace Super_Image_Viewer
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.ListBox drives_listBox;
         private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
     }
 }
 
