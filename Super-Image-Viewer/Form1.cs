@@ -18,9 +18,11 @@ namespace Super_Image_Viewer
     {
         FileSystemViewer fsv;
         ImageList iList;
+        ProgrammParametrs programmParametrs;
         public Form1()
         {
             InitializeComponent();
+            programmParametrs = new ProgrammParametrs();
             fsv = new FileSystemViewer();
             fsv.MoveTo("..\\");
             fsv.previousPath = null;
@@ -113,7 +115,7 @@ namespace Super_Image_Viewer
             {
                 string file_name = fsv.GetFiles()[i].Name;
                 if (fsv.IsImage(file_name)) {
-                    if(ProgrammParametrs.ShowImagePreview==false)
+                    if(programmParametrs.ShowImagePreview==false)
                         File_View.Items.Add(file_name, 2);
                     else
                     {
