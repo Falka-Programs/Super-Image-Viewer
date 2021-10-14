@@ -9,7 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Threading;
-using Super_Image_Viewer.Models;    
+using Super_Image_Viewer.Models;
+using System.Drawing.Imaging;
 
 namespace Super_Image_Viewer
 {
@@ -91,7 +92,6 @@ namespace Super_Image_Viewer
                 return resizeImage(path);
             });
         }
-
         private async Task UpdateFileViewAsync()
         {
             fsv.Update();
@@ -196,17 +196,19 @@ namespace Super_Image_Viewer
             }
             await UpdateFileViewAsync();
         }
-        delegate void SetActiveTabCallback(int tab);
+
         private void SetActiveTab(int tab)
         {
-            if (this.tabControl.InvokeRequired)
-            {
-                SetActiveTabCallback d = new SetActiveTabCallback(SetActiveTab);
-                this.Invoke(d, new object[] { tab });
-            }
-            else
+            Action action = () =>
             {
                 this.tabControl.SelectedIndex = tab;
+            };
+            if (this.tabControl.InvokeRequired)
+            {
+                Invoke(action);
+            }
+            else{
+                action();
             }
         }
 
@@ -216,7 +218,7 @@ namespace Super_Image_Viewer
             {
                 try
                 {
-                    //fsv.CurrentPath = path_textBox.Text;
+                    fsv.CurrentPath = path_textBox.Text;
                     await UpdateFileViewAsync();
 
                 }
@@ -414,6 +416,62 @@ namespace Super_Image_Viewer
 
         private void saveToToolStripMenuItem_Click(object sender, EventArgs e)
         {
+
+            if (pictureBox.Image != null)
+            {
+                saveFileDialog1.FileName = "Export image";
+                saveFileDialog1.Filter = "Png file(*.png)|*.png|Jpeg file(*.jpg)|*.jpg";
+                DialogResult dr = saveFileDialog1.ShowDialog();
+                if (dr == DialogResult.OK)
+                {
+                    string path = saveFileDialog1.FileName;
+                    string format = path.Split('.')[path.Split('.').Length - 1];
+                    if (format == "png")
+                    {
+                        ImageCodecInfo[] encoders = ImageCodecInfo.GetImageEncoders();
+                        EncoderParameters myEncoderParameters = new EncoderParameters(1);
+                        ImageCodecInfo EncodeInfo=null;
+                        System.Drawing.Imaging.Encoder myEncoder = System.Drawing.Imaging.Encoder.Quality;
+                        EncoderParameter myEncoderParameter = new EncoderParameter(myEncoder, 100L);
+                        myEncoderParameters.Param[0] = myEncoderParameter;
+
+                        foreach (var item in encoders)
+                        {
+                            if(item.CodecName == "Built-in PNG Codec")
+                            {
+                                EncodeInfo = item;
+                                break;
+                            }
+                        }
+                        if (EncodeInfo != null)
+                            pictureBox.Image.Save(path, EncodeInfo, myEncoderParameters);
+
+                    }else if(format == "jpg")
+                    {
+                        ImageCodecInfo[] encoders = ImageCodecInfo.GetImageEncoders();
+                        EncoderParameters myEncoderParameters = new EncoderParameters(1);
+                        ImageCodecInfo EncodeInfo = null;
+                        System.Drawing.Imaging.Encoder myEncoder = System.Drawing.Imaging.Encoder.Quality;
+                        EncoderParameter myEncoderParameter = new EncoderParameter(myEncoder, 100L);
+                        myEncoderParameters.Param[0] = myEncoderParameter;
+
+                        foreach (var item in encoders)
+                        {
+                            if (item.CodecName == "Built-in JPEG Codec")
+                            {
+                                EncodeInfo = item;
+                                break;
+                            }
+                        }
+                        if (EncodeInfo != null)
+                            pictureBox.Image.Save(path, EncodeInfo, myEncoderParameters);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Invalid format", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+            }
         }
 
         private async void drives_listBox_SelectedIndexChanged(object sender, EventArgs e)

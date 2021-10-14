@@ -21,8 +21,7 @@ namespace Super_Image_Viewer
             {
                 try
                 {
-                    UpdatePath(value);
-                    currentPath = value;
+                    currentPath = UpdatePath(value);
                 }
                 catch(Exception err)
                 {
@@ -39,15 +38,19 @@ namespace Super_Image_Viewer
         private DirectoryInfo[] Directories;
         private FileInfo[] Files;
         DirectoryInfo df;
-        private void UpdatePath(string newPath)
+        private string UpdatePath(string newPath)
         {
-            
+            if (newPath[newPath.Length - 1] != '\\')
+            {
+                newPath += '\\';
+                currentPath = newPath;
+            }
             try
             {
                 df = new DirectoryInfo(newPath);
                 Files = df.GetFiles();
                 Directories = df.GetDirectories();
-
+                return newPath;
             }
             catch(Exception err)
             {

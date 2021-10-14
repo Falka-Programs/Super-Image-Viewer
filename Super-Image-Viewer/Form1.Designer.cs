@@ -44,6 +44,9 @@ namespace Super_Image_Viewer
             this.front_button = new System.Windows.Forms.Button();
             this.back_button = new System.Windows.Forms.Button();
             this.textBox2 = new System.Windows.Forms.TextBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.drives_listBox = new System.Windows.Forms.ListBox();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.pictureBox = new System.Windows.Forms.PictureBox();
@@ -54,23 +57,20 @@ namespace Super_Image_Viewer
             this.programmToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.imageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.convertToToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.drives_listBox = new System.Windows.Forms.ListBox();
+            this.listBox1 = new System.Windows.Forms.ListBox();
             this.tabControl.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.item_menuStrip.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.groupBox4.SuspendLayout();
             this.menuStrip1.SuspendLayout();
-            this.panel1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl
@@ -226,6 +226,43 @@ namespace Super_Image_Viewer
             this.textBox2.TabIndex = 1;
             this.textBox2.Text = "Search";
             // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.Beige;
+            this.panel1.Controls.Add(this.listBox1);
+            this.panel1.Controls.Add(this.groupBox2);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panel1.ForeColor = System.Drawing.Color.Black;
+            this.panel1.Location = new System.Drawing.Point(3, 3);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(131, 715);
+            this.panel1.TabIndex = 3;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.drives_listBox);
+            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox2.Location = new System.Drawing.Point(0, 0);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(131, 175);
+            this.groupBox2.TabIndex = 0;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "DriveList";
+            // 
+            // drives_listBox
+            // 
+            this.drives_listBox.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.drives_listBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.drives_listBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.drives_listBox.ForeColor = System.Drawing.SystemColors.MenuHighlight;
+            this.drives_listBox.FormattingEnabled = true;
+            this.drives_listBox.ItemHeight = 29;
+            this.drives_listBox.Location = new System.Drawing.Point(3, 16);
+            this.drives_listBox.Name = "drives_listBox";
+            this.drives_listBox.Size = new System.Drawing.Size(125, 156);
+            this.drives_listBox.TabIndex = 0;
+            this.drives_listBox.SelectedIndexChanged += new System.EventHandler(this.drives_listBox_SelectedIndexChanged);
+            // 
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.groupBox5);
@@ -313,8 +350,7 @@ namespace Super_Image_Viewer
             // imageToolStripMenuItem
             // 
             this.imageToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.saveToToolStripMenuItem,
-            this.convertToToolStripMenuItem});
+            this.saveToToolStripMenuItem});
             this.imageToolStripMenuItem.Name = "imageToolStripMenuItem";
             this.imageToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
             this.imageToolStripMenuItem.Text = "Image";
@@ -323,48 +359,17 @@ namespace Super_Image_Viewer
             // 
             this.saveToToolStripMenuItem.Name = "saveToToolStripMenuItem";
             this.saveToToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.saveToToolStripMenuItem.Text = "SaveTo";
+            this.saveToToolStripMenuItem.Text = "SaveAs";
             this.saveToToolStripMenuItem.Click += new System.EventHandler(this.saveToToolStripMenuItem_Click);
             // 
-            // convertToToolStripMenuItem
+            // listBox1
             // 
-            this.convertToToolStripMenuItem.Name = "convertToToolStripMenuItem";
-            this.convertToToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.convertToToolStripMenuItem.Text = "ConvertTo";
-            // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.Color.Beige;
-            this.panel1.Controls.Add(this.groupBox2);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel1.ForeColor = System.Drawing.Color.Black;
-            this.panel1.Location = new System.Drawing.Point(3, 3);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(131, 715);
-            this.panel1.TabIndex = 3;
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.drives_listBox);
-            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBox2.Location = new System.Drawing.Point(0, 0);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(131, 175);
-            this.groupBox2.TabIndex = 0;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "DriveList";
-            // 
-            // drives_listBox
-            // 
-            this.drives_listBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.drives_listBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.drives_listBox.FormattingEnabled = true;
-            this.drives_listBox.ItemHeight = 29;
-            this.drives_listBox.Location = new System.Drawing.Point(3, 16);
-            this.drives_listBox.Name = "drives_listBox";
-            this.drives_listBox.Size = new System.Drawing.Size(125, 156);
-            this.drives_listBox.TabIndex = 0;
-            this.drives_listBox.SelectedIndexChanged += new System.EventHandler(this.drives_listBox_SelectedIndexChanged);
+            this.listBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.Location = new System.Drawing.Point(0, 175);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(131, 540);
+            this.listBox1.TabIndex = 1;
             // 
             // Form1
             // 
@@ -386,14 +391,14 @@ namespace Super_Image_Viewer
             this.item_menuStrip.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.groupBox5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             this.groupBox4.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -425,11 +430,11 @@ namespace Super_Image_Viewer
         private System.Windows.Forms.Button image_fornt_navigationButton;
         private System.Windows.Forms.ToolStripMenuItem imageToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveToToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem convertToToolStripMenuItem;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.ListBox drives_listBox;
+        private System.Windows.Forms.ListBox listBox1;
     }
 }
 
