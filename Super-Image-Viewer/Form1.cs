@@ -555,10 +555,18 @@ namespace Super_Image_Viewer
 
         private void findFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FindForm ff = new FindForm(fsv.CurrentPath);
-            if (ff.ShowDialog() == DialogResult.OK)
+            try
             {
-
+                FindForm ff = new FindForm(fsv.CurrentPath);
+                if (ff.ShowDialog() == DialogResult.OK)
+                {
+                    string file_name = ff.FindedFileName;
+                    ShowImage(file_name);
+                }
+            }
+            catch(Exception err)
+            {
+                MessageBox.Show($"Searching error\n{err.Message}","Error",MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

@@ -58,12 +58,19 @@ namespace Super_Image_Viewer
                     {
                         if(search_directory[1]==':' && search_directory[2] == '\\')
                         {
-                            string fName = fileName_textBox.Text;
-                            string[] tmp = fileName_textBox.Text.Split('.');
-                            if(fileName_textBox.Text.Split('.').Length>1)
-                                fName = tmp[tmp.Length - 2];
-                            string[] files = Directory.GetFiles(search_directory, $"{fName}.*", SearchOption.AllDirectories);
-                            UpdateFiles(files);
+                            try
+                            {
+                                string fName = fileName_textBox.Text;
+                                string[] tmp = fileName_textBox.Text.Split('.');
+                                if (fileName_textBox.Text.Split('.').Length > 1)
+                                    fName = tmp[tmp.Length - 2];
+                                string[] files = Directory.GetFiles(search_directory, $"{fName}.*", SearchOption.AllDirectories);
+                                UpdateFiles(files);
+                            }
+                            catch(Exception err)
+                            {
+                                throw new Exception($"Find error\n{err.Message}");
+                            }
                         }
                         else
                             MessageBox.Show("Wrong directory", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
