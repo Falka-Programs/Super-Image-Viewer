@@ -30,6 +30,7 @@ namespace Super_Image_Viewer
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -61,6 +62,7 @@ namespace Super_Image_Viewer
             this.imageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.findFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -356,7 +358,8 @@ namespace Super_Image_Viewer
             // 
             this.programmToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.settingsToolStripMenuItem,
-            this.imagesHistoryToolStripMenuItem});
+            this.imagesHistoryToolStripMenuItem,
+            this.findFileToolStripMenuItem});
             this.programmToolStripMenuItem.Name = "programmToolStripMenuItem";
             this.programmToolStripMenuItem.Size = new System.Drawing.Size(76, 20);
             this.programmToolStripMenuItem.Text = "Programm";
@@ -364,14 +367,14 @@ namespace Super_Image_Viewer
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.settingsToolStripMenuItem.Text = "Settings";
             this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
             // 
             // imagesHistoryToolStripMenuItem
             // 
             this.imagesHistoryToolStripMenuItem.Name = "imagesHistoryToolStripMenuItem";
-            this.imagesHistoryToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.imagesHistoryToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.imagesHistoryToolStripMenuItem.Text = "Images history";
             this.imagesHistoryToolStripMenuItem.Click += new System.EventHandler(this.imagesHistoryToolStripMenuItem_Click);
             // 
@@ -390,6 +393,13 @@ namespace Super_Image_Viewer
             this.saveToToolStripMenuItem.Text = "SaveAs";
             this.saveToToolStripMenuItem.Click += new System.EventHandler(this.saveToToolStripMenuItem_Click);
             // 
+            // findFileToolStripMenuItem
+            // 
+            this.findFileToolStripMenuItem.Name = "findFileToolStripMenuItem";
+            this.findFileToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.findFileToolStripMenuItem.Text = "Find file";
+            this.findFileToolStripMenuItem.Click += new System.EventHandler(this.findFileToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AllowDrop = true;
@@ -399,6 +409,7 @@ namespace Super_Image_Viewer
             this.ClientSize = new System.Drawing.Size(1580, 771);
             this.Controls.Add(this.tabControl);
             this.Controls.Add(this.menuStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "Super Image Viewer";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -456,6 +467,7 @@ namespace Super_Image_Viewer
         private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem imagesHistoryToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem findFileToolStripMenuItem;
     }
 }
 
