@@ -36,6 +36,7 @@ namespace Super_Image_Viewer
         }
         private async void Form1_Load(object sender, EventArgs e)
         {
+            ShowImage("../../Images/image.png");
             LoadIcons();
             LoadDrives();
             fsv.GoToDefaultPath();
@@ -568,6 +569,57 @@ namespace Super_Image_Viewer
             {
                 MessageBox.Show($"Searching error\n{err.Message}","Error",MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void image_fornt_navigationButton_Click(object sender, EventArgs e)
+        {
+            ///Need to fix
+            string new_image_path = fsv.CurrentImagePath;
+            FileInfo[] fileInfo = fsv.GetFiles();
+            for(int i = 0; i < fileInfo.Length; i++)
+            {
+                if(fileInfo[i].FullName == fsv.CurrentImagePath)
+                {
+                    if (i == fileInfo.Length - 1)
+                            new_image_path = fileInfo[0].FullName;
+                        else
+                            new_image_path = fileInfo[i + 1].FullName;
+                }
+            }
+            ShowImage(new_image_path);
+        }
+
+        private void image_left_navigationButton_Click(object sender, EventArgs e)
+        {
+            //Need to fix
+                string new_image_path = fsv.CurrentImagePath;
+                FileInfo[] fileInfo = fsv.GetFiles();
+            int index = 0;
+                for (int i = 0; i < fileInfo.Length; i++)
+                {
+                if (fileInfo[i].FullName == fsv.CurrentImagePath)
+                    {
+                    index = i;
+                        if (i - 1 > 0)
+                        {
+                            if(fsv.IsImage(fileInfo[i-1].Name))
+                                new_image_path = fileInfo[i - 1].FullName;
+                        else
+                        {
+                            for(int x = index; x != 0; x--)
+                            {
+                                if (fsv.IsImage(fileInfo[i - 1].Name))
+                                    new_image_path = fileInfo[i - 1].FullName;
+                            }
+                        }
+                        }
+                        else
+                            if (fsv.IsImage(fileInfo[fileInfo.Length - 1].Name))
+                                new_image_path = fileInfo[fileInfo.Length - 1].FullName;
+                    }
+                }
+                ShowImage(new_image_path);
+            
         }
     }
 

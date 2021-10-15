@@ -44,9 +44,7 @@ namespace Super_Image_Viewer
             this.path_textBox = new System.Windows.Forms.TextBox();
             this.front_button = new System.Windows.Forms.Button();
             this.back_button = new System.Windows.Forms.Button();
-            this.textBox2 = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.listBox1 = new System.Windows.Forms.ListBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.drives_listBox = new System.Windows.Forms.ListBox();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -59,10 +57,10 @@ namespace Super_Image_Viewer
             this.programmToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.imagesHistoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.findFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.imageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.findFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -176,7 +174,6 @@ namespace Super_Image_Viewer
             this.groupBox3.Controls.Add(this.path_textBox);
             this.groupBox3.Controls.Add(this.front_button);
             this.groupBox3.Controls.Add(this.back_button);
-            this.groupBox3.Controls.Add(this.textBox2);
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox3.Location = new System.Drawing.Point(134, 3);
             this.groupBox3.Name = "groupBox3";
@@ -190,7 +187,7 @@ namespace Super_Image_Viewer
             this.path_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.path_textBox.Location = new System.Drawing.Point(59, 16);
             this.path_textBox.Name = "path_textBox";
-            this.path_textBox.Size = new System.Drawing.Size(1014, 40);
+            this.path_textBox.Size = new System.Drawing.Size(1370, 40);
             this.path_textBox.TabIndex = 0;
             this.path_textBox.Text = "C:\\";
             this.path_textBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.path_textBox_KeyDown);
@@ -220,20 +217,9 @@ namespace Super_Image_Viewer
             this.back_button.UseVisualStyleBackColor = true;
             this.back_button.Click += new System.EventHandler(this.back_button_Click);
             // 
-            // textBox2
-            // 
-            this.textBox2.Dock = System.Windows.Forms.DockStyle.Right;
-            this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox2.Location = new System.Drawing.Point(1207, 16);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(225, 31);
-            this.textBox2.TabIndex = 1;
-            this.textBox2.Text = "Search";
-            // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.Beige;
-            this.panel1.Controls.Add(this.listBox1);
             this.panel1.Controls.Add(this.groupBox2);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel1.ForeColor = System.Drawing.Color.Black;
@@ -242,22 +228,13 @@ namespace Super_Image_Viewer
             this.panel1.Size = new System.Drawing.Size(131, 715);
             this.panel1.TabIndex = 3;
             // 
-            // listBox1
-            // 
-            this.listBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(0, 175);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(131, 540);
-            this.listBox1.TabIndex = 1;
-            // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.drives_listBox);
-            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(0, 0);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(131, 175);
+            this.groupBox2.Size = new System.Drawing.Size(131, 715);
             this.groupBox2.TabIndex = 0;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "DriveList";
@@ -272,7 +249,7 @@ namespace Super_Image_Viewer
             this.drives_listBox.ItemHeight = 29;
             this.drives_listBox.Location = new System.Drawing.Point(3, 16);
             this.drives_listBox.Name = "drives_listBox";
-            this.drives_listBox.Size = new System.Drawing.Size(125, 156);
+            this.drives_listBox.Size = new System.Drawing.Size(125, 696);
             this.drives_listBox.TabIndex = 0;
             this.drives_listBox.SelectedIndexChanged += new System.EventHandler(this.drives_listBox_SelectedIndexChanged);
             // 
@@ -330,6 +307,7 @@ namespace Super_Image_Viewer
             this.image_left_navigationButton.TabIndex = 1;
             this.image_left_navigationButton.Text = "<";
             this.image_left_navigationButton.UseVisualStyleBackColor = true;
+            this.image_left_navigationButton.Click += new System.EventHandler(this.image_left_navigationButton_Click);
             // 
             // image_fornt_navigationButton
             // 
@@ -341,6 +319,7 @@ namespace Super_Image_Viewer
             this.image_fornt_navigationButton.TabIndex = 0;
             this.image_fornt_navigationButton.Text = ">";
             this.image_fornt_navigationButton.UseVisualStyleBackColor = true;
+            this.image_fornt_navigationButton.Click += new System.EventHandler(this.image_fornt_navigationButton_Click);
             // 
             // menuStrip1
             // 
@@ -367,16 +346,23 @@ namespace Super_Image_Viewer
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
             this.settingsToolStripMenuItem.Text = "Settings";
             this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
             // 
             // imagesHistoryToolStripMenuItem
             // 
             this.imagesHistoryToolStripMenuItem.Name = "imagesHistoryToolStripMenuItem";
-            this.imagesHistoryToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.imagesHistoryToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
             this.imagesHistoryToolStripMenuItem.Text = "Images history";
             this.imagesHistoryToolStripMenuItem.Click += new System.EventHandler(this.imagesHistoryToolStripMenuItem_Click);
+            // 
+            // findFileToolStripMenuItem
+            // 
+            this.findFileToolStripMenuItem.Name = "findFileToolStripMenuItem";
+            this.findFileToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.findFileToolStripMenuItem.Text = "Find file";
+            this.findFileToolStripMenuItem.Click += new System.EventHandler(this.findFileToolStripMenuItem_Click);
             // 
             // imageToolStripMenuItem
             // 
@@ -392,13 +378,6 @@ namespace Super_Image_Viewer
             this.saveToToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
             this.saveToToolStripMenuItem.Text = "SaveAs";
             this.saveToToolStripMenuItem.Click += new System.EventHandler(this.saveToToolStripMenuItem_Click);
-            // 
-            // findFileToolStripMenuItem
-            // 
-            this.findFileToolStripMenuItem.Name = "findFileToolStripMenuItem";
-            this.findFileToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.findFileToolStripMenuItem.Text = "Find file";
-            this.findFileToolStripMenuItem.Click += new System.EventHandler(this.findFileToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -439,7 +418,6 @@ namespace Super_Image_Viewer
         private System.Windows.Forms.TabControl tabControl;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.TextBox path_textBox;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.ListView File_View;
@@ -464,7 +442,6 @@ namespace Super_Image_Viewer
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.ListBox drives_listBox;
-        private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem imagesHistoryToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem findFileToolStripMenuItem;

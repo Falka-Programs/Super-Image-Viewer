@@ -139,11 +139,13 @@
     </Content>
     <Content Include="Data\parametrs.xml" />
     <Content Include="Images\error.png" />
+    <Content Include="Images\favicon.ico" />
     <Content Include="Images\file.png" />
     <Content Include="Images\folder.png" />
     <Content Include="Images\history_icon.ico" />
     <Content Include="Images\image.png" />
     <Content Include="Images\search_icon.ico" />
+    <Content Include="Images\settings.ico" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
