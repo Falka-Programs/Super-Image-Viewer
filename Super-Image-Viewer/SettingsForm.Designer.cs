@@ -40,7 +40,7 @@ namespace Super_Image_Viewer
             // 
             this.imagePreview_checkBox.AutoSize = true;
             this.imagePreview_checkBox.Location = new System.Drawing.Point(15, 70);
-            this.imagePreview_checkBox.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.imagePreview_checkBox.Margin = new System.Windows.Forms.Padding(6);
             this.imagePreview_checkBox.Name = "imagePreview_checkBox";
             this.imagePreview_checkBox.Size = new System.Drawing.Size(165, 29);
             this.imagePreview_checkBox.TabIndex = 0;
@@ -101,8 +101,9 @@ namespace Super_Image_Viewer
             this.Controls.Add(this.label1);
             this.Controls.Add(this.imagePreview_checkBox);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "SettingsForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "SettingsForm";
             this.Load += new System.EventHandler(this.SettingsForm_Load);
             this.ResumeLayout(false);

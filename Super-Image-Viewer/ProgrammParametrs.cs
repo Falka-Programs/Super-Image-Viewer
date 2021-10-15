@@ -55,10 +55,6 @@ namespace Super_Image_Viewer
             {
                 item.SetValue(IntelegentImagePreview.ToString());
             }
-            //List<XElement> elements = Document.Root.Element("parametrs").Elements("parametr").ToList();
-            //elements[0] = new XElement(ShowImagePreview.ToString());
-            //elements[1] = new XElement(IntelegentImagePreview.ToString());
-            //var elements = Document.Root.Element("parametrs").Elements("parametr");
             Document.Save(filePath);
             Console.WriteLine("Saving");
         }

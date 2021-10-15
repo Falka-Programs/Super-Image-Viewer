@@ -19,10 +19,12 @@ namespace Super_Image_Viewer
         FileSystemViewer fsv;
         ImageList iList;
         ProgrammParametrs programmParametrs;
+        HistoryControl historyControl;
         public Form1()
         {
             InitializeComponent();
             programmParametrs = new ProgrammParametrs();
+            historyControl = new HistoryControl();
             fsv = new FileSystemViewer();
             fsv.MoveTo("..\\");
             fsv.previousPath = null;
@@ -67,17 +69,6 @@ namespace Super_Image_Viewer
             iList.Images.Add(img);
             return iList.Images.Count-1;
         }
-        //Action action = () =>
-        //{
-        //    this.tabControl.SelectedIndex = tab;
-        //};
-        //    if (this.tabControl.InvokeRequired)
-        //    {
-        //    Invoke(action);
-        //}
-        //    else{
-        //    action();
-        //}
         private void CleanIcons()
         {
             iList.Dispose();
@@ -189,9 +180,27 @@ namespace Super_Image_Viewer
         }
         private void ShowImage(string path)
         {
-            Image img = Image.FromFile(path);
-            pictureBox.Image = img;
-            SetActiveTab(1);
+            Action action = async () =>
+            {
+                try
+                {
+                    Image img = Image.FromFile(path);
+                    pictureBox.Image.Dispose();
+                    pictureBox.Image = img;
+                    fsv.CurrentImagePath = path;
+                    await historyControl.AddHistory(path);
+                    SetActiveTab(1);
+                }
+                catch (Exception err)
+                {
+                    MessageBox.Show($"Internal error\n{err.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                
+            };
+            if (pictureBox.InvokeRequired)
+                action.Invoke();
+            else
+                action();
         }
         private Task ShowImageAsync(string path)
         {
@@ -410,7 +419,8 @@ namespace Super_Image_Viewer
             string[] files = e.Data.GetData(DataFormats.FileDrop) as string[];
             try
             {
-                pictureBox.Image = Image.FromFile(files[files.Length - 1]);
+                ShowImage(files[files.Length - 1]);
+                //pictureBox.Image = Image.FromFile(files[files.Length - 1]);
             }
             catch
             {
@@ -534,7 +544,15 @@ namespace Super_Image_Viewer
             
         }
 
-       
+        private void imagesHistoryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            imagesHistory ih = new imagesHistory(historyControl);
+            if (ih.ShowDialog() == DialogResult.OK)
+            {
+                ShowImage(ih.FilePath);
+            }
+        }
+
 
     }
 
