@@ -1,7 +1,7 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-	<parametrs>
-		<parametr name ="ShowImagePreview">true</parametr>
-		<parametr name ="IntelegentImagePreview">false</parametr>
-	</parametrs>
+  <parametrs>
+    <parametr name="ShowImagePreview">True</parametr>
+    <parametr name="IntelegentImagePreview">True</parametr>
+  </parametrs>
 </root>

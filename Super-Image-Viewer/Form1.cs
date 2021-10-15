@@ -27,7 +27,11 @@ namespace Super_Image_Viewer
             fsv.MoveTo("..\\");
             fsv.previousPath = null;
         }
-
+        protected override void OnClosed(EventArgs e)
+        {
+            programmParametrs.UpdateSetting();
+            base.OnClosed(e);
+        }
         private async void Form1_Load(object sender, EventArgs e)
         {
             LoadIcons();
@@ -106,33 +110,7 @@ namespace Super_Image_Viewer
             });
         }
 
-        //private Task UpdateFileViewAsync()
-        //{
-        //    return Task.Run(() =>
-        //    {
-        //        UpdateFile();
-        //    });
-        //}
-        private void AddImage(string file_name)
-        {
-            File_View.Items.Add(file_name, 2);
-        }
-        private Task AddImageAsync(string file_name)
-        {
-            //if (textbox1.InvokeRequired)
-            //{
-            //    textbox1.Invoke(new MethodInvoker(delegate { name = textbox1.text; }));
-            //}
-            return Task.Run(() =>
-                {
-                if (File_View.InvokeRequired)
-                    File_View.Invoke(new MethodInvoker(delegate { File_View.Items.Add(file_name, 2); }));
-                        //File_View.Items.Invoke(.Add(file_name, 2);
-                else
-                    File_View.Items.Add(file_name, 2);
-                });
-
-        }
+        
         private async Task UpdateFileViewAsync()
         {
             fsv.Update();
@@ -553,7 +531,11 @@ namespace Super_Image_Viewer
                 programmParametrs.IntelegentImagePreview = sf.IntelegentPreviewStatus;
                 programmParametrs.ShowImagePreview = sf.ImagePreviewStatus;
             }
+            
         }
+
+       
+
     }
 
     

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-
+using System.Threading;
 namespace Super_Image_Viewer
 {
     class ProgrammParametrs
@@ -21,11 +21,11 @@ namespace Super_Image_Viewer
                 List<XElement> elements = Document.Root?.Element("parametrs")?.Elements("parametr")?.ToList();
                 if (elements.Count > 1)
                 {
-                    if (elements[0].Value == "true")
+                    if (elements[0].Value == "True")
                         ShowImagePreview = true;
                     else
                         ShowImagePreview = false;
-                    if (elements[1].Value == "true")
+                    if (elements[1].Value == "True")
                         IntelegentImagePreview = true;
                     else
                         IntelegentImagePreview = false;
@@ -39,10 +39,28 @@ namespace Super_Image_Viewer
 
         public void UpdateSetting()
         {
-            List<XElement> elements = Document.Root.Element("parametrs").Elements("parametr").ToList();
-            elements[0] = new XElement(ShowImagePreview.ToString());
-            elements[1] = new XElement(IntelegentImagePreview.ToString());
+            var items = from item in Document.Root.Elements("parametrs").Elements("parametr")
+                        where item.Attribute("name").Value == "ShowImagePreview"
+                        select item;
+            foreach (var item in items)
+            {
+                item.SetValue(ShowImagePreview.ToString());
+            }
+
+            var items2 = from item in Document.Root.Elements("parametrs").Elements("parametr")
+                         where item.Attribute("name").Value == "IntelegentImagePreview"
+                         select item;
+
+            foreach (var item in items2)
+            {
+                item.SetValue(IntelegentImagePreview.ToString());
+            }
+            //List<XElement> elements = Document.Root.Element("parametrs").Elements("parametr").ToList();
+            //elements[0] = new XElement(ShowImagePreview.ToString());
+            //elements[1] = new XElement(IntelegentImagePreview.ToString());
+            //var elements = Document.Root.Element("parametrs").Elements("parametr");
             Document.Save(filePath);
+            Console.WriteLine("Saving");
         }
 
         
