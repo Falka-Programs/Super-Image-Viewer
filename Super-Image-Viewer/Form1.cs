@@ -36,11 +36,12 @@ namespace Super_Image_Viewer
         }
         private async void Form1_Load(object sender, EventArgs e)
         {
-            ShowImage("../../Images/image.png");
+            fsv.CurrentImagePath = "../../Images/image.png";
+            //ShowImage("../../Images/image.png");
+            SetActiveTab(0);
             LoadIcons();
             LoadDrives();
             fsv.GoToDefaultPath();
-            Console.WriteLine(fsv.CurrentPath);
             await UpdateFileViewAsync();
             
         }
