@@ -553,7 +553,14 @@ namespace Super_Image_Viewer
             }
         }
 
+        private void findFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FindForm ff = new FindForm(fsv.CurrentPath);
+            if (ff.ShowDialog() == DialogResult.OK)
+            {
 
+            }
+        }
     }
 
     
